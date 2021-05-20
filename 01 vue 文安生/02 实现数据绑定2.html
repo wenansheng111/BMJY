@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 视图 -->
+    <div id="el">
+        <h1>{{title}}</h1>
+    </div>
+    <!-- 视图模型 -->
+    <script>
+        let data = {
+              title:'文安生最帅',
+              _title:'文安生最帅'
+        }
+        function Vue(obj){
+            let data = obj.data;
+            let tpl = document.querySelector(obj.el).innerHTML;
+            // console.log(tpl);
+            //绑定数据 
+            Object.defineProperty(obj.data,'title',{
+                //get
+                get(){
+                    return this._title;
+                },
+                //set
+                set(value){
+                    this._title = value;
+                    // 更新视图
+                    updateView();
+                }
+            })
+            //更新视图 
+            function updateView(){
+                // 替换 
+                let str = tpl.replace(/{{(\w+)}}/,(math,$1) => {
+                    // console.log(data[$1]);
+                    return data[$1];
+                })
+                //更新视图
+                document.querySelector(obj.el).innerHTML = str;
+
+            }
+            updateView();
+        }
+    </script>
+    <!--让数据和视图绑定-->
+    <script>
+     let app = new Vue({
+         el:'#el',
+         data
+     })
+    </script>
+</body>
+</html>
